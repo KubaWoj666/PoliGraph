@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h2 style="margin-bottom: 1rem;">Upload a Political Speech or Search the Archive</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="video">Upload Video</label>
+    <input type="file" name="video" accept="video/*" required>
+
+    <label for="query">Search for a Topic</label>
+    <input type="text" name="query" placeholder="e.g. What did Tusk say about inflation?" required>
+
+    <button class="btn-primary" type="submit">Submit</button>
+</form>
+{% endblock %}
