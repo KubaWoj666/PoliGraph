@@ -5,10 +5,10 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="video">Upload Video</label>
-    <input type="file" name="video" accept="video/*" required>
+    <input type="text" name="video" accept="" required>
 
     <label for="query">Search for a Topic</label>
-    <input type="text" name="query" placeholder="e.g. What did Tusk say about inflation?" required>
+    <input type="text" name="query" placeholder="e.g. What did Tusk say about inflation?" >
 
     <button class="btn-primary" type="submit">Submit</button>
 </form>

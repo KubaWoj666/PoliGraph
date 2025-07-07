@@ -1,5 +1,8 @@
 venv
-test.py
 db.sqlite3
 __pycache__
 .DS_Store 
+ApiKey.txt
+qdrant_storage
+.env
+request.py
