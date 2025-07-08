@@ -36,7 +36,7 @@ def embed_and_store_transcript_fragment(fragment, video_id, video_ulr, block_ind
     embedding = response.data[0].embedding
 
     # 4. Klient Qdrant
-    qdrant = QdrantClient("http://localhost:6333")
+    qdrant = QdrantClient(env.str("QDRANT_URL"))
 
     # # 5. Nazwa kolekcji = np. "video__{video_id}"
     # collection_name = f"video__{video_id}"

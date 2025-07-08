@@ -2,22 +2,19 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI, OpenAI
-import os
 from environs import Env
+
 env = Env()
 env.read_env()
 
-# Ustaw API key i endpoint OpenRouter
-OPENAI_API_KEY = env.str("OPENAI_API_KEY")
-OPENAI_API_BASE = env.str("OPENAI_API_BASE")
 
 def build_chain():
     """Tworzy i zwraca łańcuch LangChain do streszczania i tagowania"""
     print("sumerrize and tag")
 
     llm = ChatOpenAI(
-        openai_api_base=OPENAI_API_BASE,   # <- to jest kluczowe
-        openai_api_key=OPENAI_API_KEY,           # <- klucz z OpenRouter
+        openai_api_base=env.str("OPENAI_API_BASE"),   # <- to jest kluczowe
+        openai_api_key=env.str("OPENAI_API_KEY"),           # <- klucz z OpenRouter
         model_name="openai/gpt-4.1",                 # <- model OpenRoutera
     )
    

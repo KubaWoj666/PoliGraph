@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .utils import transcribe_from_youtube, process_transcript, transcription_from_yt, extract_video_id, split_transcript #save_blocks_to_jsonl
+from .utils import  extract_video_id, split_transcript #save_blocks_to_jsonl
 from qdrant_client import QdrantClient
 
 from django.views.decorators.csrf import csrf_exempt
@@ -10,10 +10,9 @@ from .models import Video, Tag, TranscriptSegment
 
 
 from django.shortcuts import render, redirect
-from .utils import extract_video_id, transcription_from_yt, split_transcript, fetch_transcripts
+from .utils import extract_video_id,  split_transcript, fetch_transcripts
 from .embending import embed_and_store_transcript_fragment
 from .models import Video, TranscriptSegment
-from .tasks import tag_video_segments, test_celery_task# ← Celery task
 from .summarize_and_tag import summarize_and_tag
 
 import json
@@ -31,7 +30,7 @@ def index_view(request):
         # sprawdź czy już jest takie wideo
         # video, created = Video.objects.get_or_create(url=video_url)
 
-        transcript = fetch_transcripts(video_url)
+        transcript = fetch_transcripts(video_id)
         # print(transcript[0].get("tracks")[0])
 
         # if created:
