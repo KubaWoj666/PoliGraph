@@ -1,6 +1,13 @@
 {% extends "_base.html" %}
 
 {% block content %}
+ {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-primary"  role="alert" {% if message.tags %}alert-{{ message.tags }}{% endif %}>
+        {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 <h2 style="margin-bottom: 1rem;">Upload a Political Speech or Search the Archive</h2>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}

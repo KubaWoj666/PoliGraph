@@ -10,7 +10,7 @@ import json
 
 from sentence_transformers import SentenceTransformer
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound
-
+from django.contrib import messages
 
 from transformers import pipeline
 from datetime import timedelta
@@ -28,11 +28,19 @@ def format_seconds(seconds_str):
 
 def split_transcript(transcript, max_duration=90):
     # odfiltrowanie nieprawidłowych wpisów
-    transcript = transcript[0].get("tracks")[0].get("transcript")
-    transcript = [entry for entry in transcript if "start" in entry and "text" in entry]
+    
+    try:
+        transcript = transcript[0].get("tracks")[0].get("transcript")
+        transcript = [entry for entry in transcript if "start" in entry and "text" in entry]
+    except (IndexError, AttributeError, TypeError):
+        print("DUP")
+        return []
 
     if not transcript:
-        raise ValueError("Transkrypt nie zawiera żadnych poprawnych wpisów z kluczem 'start'.")
+        print("PAPAPA")
+        return []
+    # if not transcript:
+    #     raise ValueError("Transkrypt nie zawiera żadnych poprawnych wpisów z kluczem 'start'.")
 
     blocks = []
     current_block = []

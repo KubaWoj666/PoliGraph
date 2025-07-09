@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'core',
 
     #3-rd party
+    'bootstrap5',
     
 ]
 
