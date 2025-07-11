@@ -8,15 +8,22 @@
         </div>
     {% endfor %}
 {% endif %}
-<h2 style="margin-bottom: 1rem;">Upload a Political Speech or Search the Archive</h2>
-<form method="post" enctype="multipart/form-data">
+<h2 style="margin-bottom: 1rem;">Upload a Political Speech</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'index' %}">
     {% csrf_token %}
-    <label for="video">Upload Video</label>
-    <input type="text" name="video" accept="" required>
-
-    <label for="query">Search for a Topic</label>
-    <input type="text" name="query" placeholder="e.g. What did Tusk say about inflation?" >
-
-    <button class="btn-primary" type="submit">Submit</button>
+    <label for="video">Video URL</label>
+    <input type="text" name="video" required>
+    <button class="btn-primary" type="submit">Upload</button>
 </form>
+
+<hr>
+
+<h2 style="margin-bottom: 1rem;">Search the Archive</h2>
+<form method="post" enctype="multipart/form-data" action="{% url 'search' %}" >
+    {% csrf_token %}
+    <label for="query">Search for a Topic</label>
+    <input type="text" name="query" placeholder="e.g. What did Tusk say about inflation?" required>
+    <button class="btn-primary" type="submit">Search</button>
+</form>
+
 {% endblock %}

@@ -24,9 +24,9 @@ def embed_and_store_transcript_fragment(fragment, video_id, video_ulr, block_ind
     )
 
     # 2. Streszczenie i tagi
-    result = summarize_and_tag(text)
-    short = result.get("summary")
-    tags = result.get("tags")
+    results = summarize_and_tag(text)
+    short = results.get("summary")
+    tags = results.get("tags")
 
     # 3. Embedding
     response = client.embeddings.create(
@@ -67,3 +67,54 @@ def embed_and_store_transcript_fragment(fragment, video_id, video_ulr, block_ind
             )
         ]
     )
+
+
+def embed_user_query(query):
+    client = OpenAI(
+        base_url=env.str("BASE_URL"),
+        api_key=env.str("API_KEY"),
+    )
+
+    results = summarize_and_tag(query)
+    tags = results.get("tags")
+
+    response = client.embeddings.create(
+        input=query,
+        model="text-embedding-3-large"
+    )
+    embedding = response.data[0].embedding
+
+    qdrant = QdrantClient(env.str("QDRANT_URL"))
+
+    filter_query = {
+    "should": [
+        {
+            "key": "tags",
+            "match": {"value": tag}
+        } for tag in tags
+        ]
+    } if tags else None
+
+    # Szukamy w bazie Qdrant
+    results = qdrant.search(
+        collection_name="transcript_test2",
+        query_vector=embedding,
+        limit=10,
+        score_threshold=0.45,
+        with_payload=True,
+        query_filter=filter_query  # ważne: query_filter zamiast filter
+    )
+
+    for point in results:
+        
+        print(f"Score: {point.score:.4f} | ID: {point.id}")
+        print(f"Text: {point.payload.get('text')[:150]}...")
+        print()
+        print(f"ID: {point.id}")
+        print(f"Dopasowanie (score): {point.score:.3f}")
+        print(f"Start time: {point.payload.get('start_time')}")
+        print(f"Tekst: {point.payload.get('text')}")
+        print(f"Streszczenie: {point.payload.get('summary')}")
+        print(f"Tagi: {point.payload.get('tags')}")
+        print(f"Źródło wideo: {point.payload.get('video_url')}")
+        print("-" * 50)

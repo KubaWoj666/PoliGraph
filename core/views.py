@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .utils import  extract_video_id, split_transcript
 from django.shortcuts import render, redirect
 from .utils import extract_video_id,  split_transcript, fetch_transcripts
-from .embending import embed_and_store_transcript_fragment
+from .embending import embed_and_store_transcript_fragment, embed_user_query
 
 
 
@@ -33,3 +33,11 @@ def index_view(request):
 
     return render(request, "core/index.html")
 
+
+def search_view(request):
+    if request.method == "POST":
+        query = request.POST.get("query")
+        print(query)
+        embed_user_query(query)
+        return redirect("index")
+    return render(request, "core/index.html")
